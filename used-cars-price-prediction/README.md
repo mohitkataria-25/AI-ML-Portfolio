@@ -1,85 +1,114 @@
-# Used Car Price Prediction (Regression with Neural Networks)
+# Used Cars Price Prediction — End-to-End ML Pipeline
 
-This project predicts **used car prices** using a **feedforward neural network (MLP)** built with **TensorFlow / Keras**. It is refactored from an exploratory Jupyter notebook into a **modular, runnable ML project** suitable for showcasing to recruiters.
-
-Key aspects:
-
-- End-to-end ML workflow: data loading → cleaning → feature engineering → train/val/test split → scaling → model training → evaluation
-- Clear code structure under `src/` (preprocessing, model, training, evaluation)
-- Easily reproducible with CLI-based training scripts
+An end-to-end machine learning system that predicts used car prices using classical models and a neural network.  
+This project demonstrates **modular ML architecture**, **clean engineering practices**, **hyperparameter tuning**, and a **production-like inference pipeline**.
 
 ---
 
-## 📊 Problem Overview
+## 🚀 Project Highlights
 
-- **Task:** Supervised regression – predict the selling price of a used car  
-- **Input:** Tabular data with features such as brand, model, kilometers driven, fuel type, transmission, seats, mileage, engine, power, etc.  
-- **Output:** Predicted price (continuous value)
+### ✔️ Modular ML Codebase  
+Separated into `preprocessing`, `models`, `training`, `evaluation`, `tuning`, and `inference`.
 
----
+### ✔️ Multi-Model Comparison  
+- Random Forest  
+- XGBoost  
+- Neural Network (Keras Sequential)
 
-## 🧠 Approach
+### ✔️ Hyperparameter Tuning  
+Built using `RandomizedSearchCV` for Random Forest and XGBoost.
 
-### 1. Data Loading & Cleaning
+### ✔️ Model Persistence  
+- Sklearn & XGBoost → Joblib (`.pkl`)  
+- Neural Network → Keras Save (`.h5`)
 
-- Load the dataset from `data/used_cars_data.csv`
-- Drop rows with missing `Price`
-- Handle duplicates
-- Optionally engineer numeric features from string columns, if present:
-  - `Mileage` → `mileage_num`
-  - `Engine` → `engine_num`
-  - `Power` → `power_num`
-
-### 2. Feature Engineering
-
-- Separate target: `Price`
-- One-hot encode categorical variables (brand, model, fuel type, transmission, etc.)
-- Standardize numeric features using `StandardScaler` (fit on training data only)
-
-### 3. Data Splits
-
-- Split data into **train / validation / test** sets using `train_test_split` with a fixed random seed for reproducibility.
-
-### 4. Model
-
-- Use a **Multi-Layer Perceptron (MLP)** regression model built with `tensorflow.keras`:
-
-  - Several hidden layers with ReLU activation
-  - Final layer: 1 neuron (linear) for regression
-
-- Loss: **Mean Squared Error (MSE)**
-- Metrics: **Mean Absolute Error (MAE)**, optional **R²**
-
-### 5. Training & Evaluation
-
-- Train the model on the training set, monitor validation performance
-- Evaluate on the held-out test set
-- Report metrics such as:
-  - MAE
-  - RMSE
-  - R² score
+### ✔️ Inference Pipeline  
+Evaluate saved models or run predictions on new samples.
 
 ---
 
-## 🗂 Project Structure
+## 📂 Repository Structure
 
-```text
+```
 used-cars-price-prediction/
-├── README.md
-├── requirements.txt
-│
-├── data/
-│   └── used_cars_data.csv
-│
-├── notebooks/
-│   └── UsedCars.ipynb
 │
 ├── src/
-│   ├── __init__.py
-│   ├── preprocess.py      # data loading, cleaning, encoding, scaling, splitting
-│   ├── model.py           # build MLP regression model
-│   ├── train.py           # CLI training script
-│   └── evaluate.py        # CLI evaluation script
+│   ├── preprocessing.py
+│   ├── models.py
+│   ├── train.py
+│   ├── inference.py
+│   ├── evaluate.py
+│   ├── tuning.py
 │
-└── models/
-    └── used_cars_mlp.h5   # saved Keras model
+├── metrics/          
+├── models/           
+├── notebooks/        
+├── requirements.txt
+├── README.md
+└── .gitignore
+```
+
+---
+
+## ⚙️ Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 🧠 How It Works
+
+### 1️⃣ Preprocessing
+- Numeric extraction  
+- One-hot encoding  
+- Train/validation/test split  
+- Standardization  
+
+### 2️⃣ Model Training
+```bash
+python -m src.train
+```
+
+With tuning:
+```bash
+python -m src.train --tune
+```
+
+---
+
+## 🔍 Inference
+
+```bash
+python -m src.inference --model_path     models/random_forest/used_cars_rf.pkl     models/xgboost/used_cars_xgb.pkl     models/neural_net/used_cars_mlp.h5
+```
+
+---
+
+## 📊 Example Comparison Table
+
+| Model | RMSE | MAE | R² |
+|-------|------|-----|----|
+| Random Forest | … | … | … |
+| XGBoost | … | … | … |
+| Neural Network | … | … | … |
+
+Actual results saved to `/metrics/`.
+
+---
+
+## 🛠️ Technologies
+
+Python, Pandas, NumPy, Scikit-Learn, XGBoost, TensorFlow/Keras, Joblib, Matplotlib.
+
+---
+
+## 👤 Author
+
+**Mohit Kataria**  
+Senior Software Engineer • Data & ML Engineering
+
+---
+
+## ⭐ Star the repo if you found it helpful!
