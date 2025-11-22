@@ -1,6 +1,6 @@
 # Used Cars Price Prediction — End-to-End ML Pipeline
 
-An end-to-end machine learning system that predicts used car prices using classical models and a neural network.  
+An end-to-end machine learning system that predicts used car prices using classical tree-based models (primary) and an optional neural network baseline.  
 This project demonstrates **modular ML architecture**, **clean engineering practices**, **hyperparameter tuning**, and a **production-like inference pipeline**.
 
 ---
@@ -11,9 +11,9 @@ This project demonstrates **modular ML architecture**, **clean engineering pract
 Separated into `preprocessing`, `models`, `training`, `evaluation`, `tuning`, and `inference`.
 
 ### ✔️ Multi-Model Comparison  
-- Random Forest  
-- XGBoost  
-- Neural Network (Keras Sequential)
+- Random Forest (primary model)  
+- XGBoost (primary model)  
+- Neural Network (Keras Sequential, experimental baseline)
 
 ### ✔️ Hyperparameter Tuning  
 Built using `RandomizedSearchCV` for Random Forest and XGBoost.
@@ -76,6 +76,12 @@ With tuning:
 python -m src.train --tune
 ```
 
+### 3️⃣ Model Selection Rationale
+- The dataset is **tabular, structured data** with mixed numeric and categorical features.
+- In this setting, **tree-based ensembles** (Random Forest, XGBoost) typically offer the best balance of performance, robustness, and training speed.
+- A small feedforward **neural network** is included as an experimental baseline, but in practice the tree-based models performed as well or better while being faster and simpler to train on CPU-only environments.
+- For any deployment or production-style use, this project treats **Random Forest and XGBoost as the primary candidate models**, with the neural network used mainly for comparison and learning purposes.
+
 ---
 
 ## 🔍 Inference
@@ -94,7 +100,7 @@ python -m src.inference --model_path     models/random_forest/used_cars_rf.pkl  
 | XGBoost | … | … | … |
 | Neural Network | … | … | … |
 
-Actual results saved to `/metrics/`.
+Actual results (with Random Forest and XGBoost usually outperforming the neural network on this tabular dataset) are saved to `/metrics/`.
 
 ---
 
