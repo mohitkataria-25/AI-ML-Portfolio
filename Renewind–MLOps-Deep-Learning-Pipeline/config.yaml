@@ -1,0 +1,115 @@
+# ===========================
+#   DATA INGESTION CONFIG
+# ===========================
+
+data_ingest:
+  raw_path: "data/raw/Renewind.csv"     # your downloaded Renewind dataset
+  shuffle: true
+  train_size: 0.70
+  test_size: 0.50
+  random_state: 42
+
+  # Format to save train/val/test splits
+  output_fmt: "parquet"        # options: parquet, csv
+
+  output_paths:
+    x_train: "data/ingested/x_train.parquet"
+    x_val:   "data/ingested/x_val.parquet"
+    x_test:  "data/ingested/x_test.parquet"
+
+    y_train: "data/ingested/y_train.parquet"
+    y_val:   "data/ingested/y_val.parquet"
+    y_test:  "data/ingested/y_test.parquet"
+
+# ===========================
+#   PREPROCESSING CONFIG
+# ===========================
+
+preprocess:
+  # input = from ingestion stage
+  input_paths:
+    x_train: "data/ingested/x_train.parquet"
+    x_val:   "data/ingested/x_val.parquet"
+    x_test:  "data/ingested/x_test.parquet"
+
+    y_train: "data/ingested/y_train.parquet"
+    y_val:   "data/ingested/y_val.parquet"
+    y_test:  "data/ingested/y_test.parquet"
+
+    input_fmt: "parquet"
+
+  output_paths:
+    x_train: "data/processed/x_train_scaled.parquet"
+    x_val:   "data/processed/x_val_scaled.parquet"
+    x_test:  "data/processed/x_test_scaled.parquet"
+
+    y_train: "data/processed/y_train.parquet"
+    y_val:   "data/processed/y_val.parquet"
+    y_test:  "data/processed/y_test.parquet"
+
+    output_fmt: "parquet"    # format for processed/scaled data
+    scaler_path: "data/processed/scaler.pkl"
+
+# ===========================
+#      TRAINING CONFIG
+# ===========================
+
+training:
+  experiment_name: "Renewind_dev_unit_test_1"
+  hidden_layers: [64, 32]
+  batch_size: 32
+  epochs: 5
+  learning_rate: 0.001
+  dropout_rate: [True, 0.3]
+  l2: 0.0001
+  batch_norm: True 
+  optimizer: "adam"
+  model_output_path: "artifacts/current/model/model.h5"
+  activation: "relu"
+  output_activation: "sigmoid"
+# ===========================
+#      EVALUATION CONFIG
+# ===========================
+
+evaluation:
+  threshold: 0.5
+
+  # where evaluate.py should load scaled data from
+  input_paths:
+    x_train: "data/processed/x_train_scaled.parquet"
+    x_val:   "data/processed/x_val_scaled.parquet"
+    x_test:  "data/processed/x_test_scaled.parquet"
+    y_train: "data/processed/y_train.parquet"
+    y_val:   "data/processed/y_val.parquet"
+    y_test:  "data/processed/y_test.parquet"
+
+# ===========================
+#      ARTIFACT STORAGE
+# ===========================
+
+artifacts:
+  base_dir: "artifacts"
+
+  # working directory for the CURRENT run
+  current_subdir: "current"
+
+  # archive of all historical runs
+  archive_subdir: "archive"
+
+  # subfolders inside artifacts/current/
+  model_subdir: "model"
+  metrics_subdir: "metrics"
+  plots_subdir: "plots"
+  scaler_subdir: "scaler"
+  config_subdir: "config"
+
+# ===========================
+#       AWS / S3 CONFIG
+# ===========================
+# Enable later when integrating
+aws:
+  enabled: false
+  bucket_raw: "renewind-raw"
+  bucket_processed: "renewind-processed"
+  bucket_models: "renewind-models"
+  region: "us-east-1"

@@ -1,0 +1,23 @@
+# Core
+numpy
+pandas
+pyyaml
+
+# ML / Stats
+scikit-learn
+tensorflow==2.10.0
+
+# Visualization (optional but useful for notebooks/reports)
+matplotlib
+seaborn
+
+# MLOps
+mlflow
+
+# For production pipeline / scheduling (optional for now)
+apache-airflow[postgres]
+psycopg2-binary
+
+# Utility
+python-dotenv
+joblib
